@@ -1,25 +1,71 @@
-import logo from './logo.svg';
+import React, { useState,useEffect } from 'react';
+import Header from './components/Header';
+import Lists from './components/Lists';
+import SearchBar from "./components/Search"
 import './App.css';
+import Pagination from './components/Pagination';
+import Footer from './components/Footer';
+import Title from './components/Title'
 
-function App() {
+const App = () => {
+  const [filters, setFilters] = useState({});
+  const [Data,setData]=useState([]);
+  const [currentPage,setCurrentPage]=useState(1);
+  const limit=5;
+
+  const fetchPost = async () => {
+    let url = `https://669f704cb132e2c136fdd9a0.mockapi.io/api/v1/retreats?`;
+    if(filters.title){
+      if (filters.title!="") {
+        url += `search=${filters.title}`;
+      }
+      else if(filters.title===''){
+        url=`https://669f704cb132e2c136fdd9a0.mockapi.io/api/v1/retreats?`
+      }
+
+    }
+    if (filters.date) {
+      
+      url += `date=${filters.date}`;
+    }
+    if (filters.type) {
+      url += `type=${filters.type}`;
+    }
+
+   
+
+    try {
+      const response = await fetch(url);
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Failed to fetch data", error);
+    }
+  };
+
+  useEffect(()=>{fetchPost()},[filters, currentPage])
+
+  const lastPostIndex=currentPage*limit;
+  const firstPostIndex=lastPostIndex-limit;
+  const currentData=Data.slice(firstPostIndex,lastPostIndex)
+
+  const handleFilterChange = (newFilters) => {
+   console.log("filteee",newFilters.date)
+    setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
+    console.log("fil",filters)
+    setCurrentPage(1);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Title/>
+      <SearchBar onFilterChange={handleFilterChange} data={Data}/>
+      <Lists data={currentData} />
+      <Pagination totalPosts={Data.length} limit={limit} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <Footer/>
     </div>
   );
-}
+};
 
 export default App;
