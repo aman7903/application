@@ -31,9 +31,6 @@ const App = () => {
     if (filters.type) {
       url += `type=${filters.type}`;
     }
-
-   
-
     try {
       const response = await fetch(url);
       const result = await response.json();
@@ -43,14 +40,15 @@ const App = () => {
     }
   };
 
-  useEffect(()=>{fetchPost()},[filters, currentPage])
+  useEffect(()=>{
+    fetchPost()
+  },[filters, currentPage])
 
   const lastPostIndex=currentPage*limit;
   const firstPostIndex=lastPostIndex-limit;
   const currentData=Data.slice(firstPostIndex,lastPostIndex)
 
   const handleFilterChange = (newFilters) => {
-   console.log("filteee",newFilters.date)
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
     console.log("fil",filters)
     setCurrentPage(1);
@@ -62,7 +60,7 @@ const App = () => {
       <Title/>
       <SearchBar onFilterChange={handleFilterChange} data={Data}/>
       <Lists data={currentData} />
-      <Pagination totalPosts={Data.length} limit={limit} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <Pagination totalData={Data.length} limit={limit} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
       <Footer/>
     </div>
   );
