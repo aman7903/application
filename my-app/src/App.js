@@ -10,31 +10,28 @@ import Title from './components/Title'
 const App = () => {
   const [filters, setFilters] = useState({});
   const [Data,setData]=useState([]);
+  const [fullData, setFullData] = useState([]);
   const [currentPage,setCurrentPage]=useState(1);
   const limit=5;
 
   const fetchPost = async () => {
     let url = `https://669f704cb132e2c136fdd9a0.mockapi.io/api/v1/retreats?`;
-    if(filters.title){
-      if (filters.title!="") {
+   
+      if (filters.title) {
         url += `search=${filters.title}`;
       }
-      else if(filters.title===''){
-        url=`https://669f704cb132e2c136fdd9a0.mockapi.io/api/v1/retreats?`
-      }
-
-    }
     if (filters.date) {
       
       url += `date=${filters.date}`;
     }
-    if (filters.type) {
-      url += `type=${filters.type}`;
-    }
+      if (filters.title) {
+        url += `search=${filters.title}`;
+      }
     try {
       const response = await fetch(url);
       const result = await response.json();
       setData(result);
+      setFullData(result);
     } catch (error) {
       console.error("Failed to fetch data", error);
     }
@@ -50,7 +47,6 @@ const App = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
-    console.log("fil",filters)
     setCurrentPage(1);
   };
 
@@ -58,9 +54,9 @@ const App = () => {
     <div className="App">
       <Header />
       <Title/>
-      <SearchBar onFilterChange={handleFilterChange} data={Data}/>
+      <SearchBar onFilterChange={handleFilterChange} data={fullData}/>
       <Lists data={currentData} />
-      <Pagination totalData={Data.length} limit={limit} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <Pagination totalPosts={Data.length} limit={limit} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
       <Footer/>
     </div>
   );

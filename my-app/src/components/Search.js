@@ -2,7 +2,9 @@ import React from 'react';
 
 const SearchBar = ({ onFilterChange, data }) => {
 
+
   const uniqueTypes = [...new Set(data.map(item => item.type))];
+  console.log("type",uniqueTypes)
 
   return (
     <div className="filter-bar">
@@ -12,7 +14,7 @@ const SearchBar = ({ onFilterChange, data }) => {
         onFilterChange({ date: dateValue });
       }} />
        <select onChange={(e) => onFilterChange({ type: e.target.value })}>Filter by Type
-        <option value="">All Types</option>
+        <option value=''>All Types</option>
         {uniqueTypes.map((type, index) => (
           <option key={index} value={type}>{type}</option>
         ))}

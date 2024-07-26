@@ -1,7 +1,31 @@
 
+
+
+// const Pagination=({totalPosts,limit,setCurrentPage})=>{
+
+//     let page=[];
+//     for(let i=1;i<=Math.ceil(totalPosts/limit); i++){
+
+//         page.push(i);
+//     }
+
+//     return(
+//         <>
+//         {
+//             page.map((page,index)=>{
+//                 return <button key={index} onClick={()=>setCurrentPage(page)}>{page}</button>
+//             })  
+//         }
+//         </>
+//     )
+// }
+
+// export default Pagination;
+
+
 import React from 'react';
 
-const Pagination = ({ totalData, limit, currentPage, setCurrentPage }) => {
+const Pagination = ({ totalPosts, limit, currentPage, setCurrentPage }) => {
   const totalPages = Math.ceil(totalPosts / limit);
 
   const handlePrevious = () => {
