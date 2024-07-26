@@ -18,15 +18,17 @@ const App = () => {
     let url = `https://669f704cb132e2c136fdd9a0.mockapi.io/api/v1/retreats?`;
    
       if (filters.title) {
+        if(filters.title!=""){
         url += `search=${filters.title}`;
+        }
+        else {
+          url=url;
+        }
       }
     if (filters.date) {
       
       url += `date=${filters.date}`;
     }
-      if (filters.title) {
-        url += `search=${filters.title}`;
-      }
     try {
       const response = await fetch(url);
       const result = await response.json();
