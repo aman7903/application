@@ -48,11 +48,11 @@ import React, { useEffect, useState } from 'react';
 import List from './List';
 
 const Lists = ({data}) => {
-  console.log("kkk",data)
+
   if (data.length === 0) {
     return <p>No retreats found. Please try adjusting your search criteria.</p>;
   }
-  
+
   return (
     <div className='retreat-container'>
       
